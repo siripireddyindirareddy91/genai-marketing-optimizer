@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from app.ml import train, predict, segment
 from app.agents import build_graph
-from app.main import app
+from app.main import app, workspace, models
 
 def observations():
     return [dict(id=str(i), engagement=(i * 17) % 100, visits=(i * 7) % 80, purchases=i % 20, recency=(i * 11) % 180, spending=i * 37, converted=int((i * 17) % 100 > 50)) for i in range(160)]
@@ -45,3 +45,24 @@ def test_health_and_auth_boundary(monkeypatch):
     monkeypatch.setenv('SUPABASE_URL', 'https://example.supabase.co')
     monkeypatch.setenv('SUPABASE_ANON_KEY', 'placeholder')
     assert client.get('/api/customers').status_code == 401
+
+def test_analyst_cannot_train_or_write():
+    app.dependency_overrides[workspace] = lambda: {'organization_id': 'org-a', 'role': 'Marketing Analyst'}
+    try:
+        client = TestClient(app)
+        assert client.post('/api/ml/train', json={'rows': observations()}).status_code == 403
+        assert client.post('/api/customers', json={'name': 'Example'}).status_code == 403
+    finally:
+        app.dependency_overrides.clear()
+
+def test_model_isolation_by_organization():
+    pipeline, evaluation = train(observations())
+    models['org-a'] = (pipeline, 'logistic', evaluation)
+    app.dependency_overrides[workspace] = lambda: {'organization_id': 'org-b', 'role': 'Admin'}
+    try:
+        client = TestClient(app)
+        assert client.get('/api/ml/metrics').status_code == 409
+        assert client.post('/api/ml/predict', json=observations()[0]).status_code == 409
+    finally:
+        app.dependency_overrides.clear()
+        models.clear()
