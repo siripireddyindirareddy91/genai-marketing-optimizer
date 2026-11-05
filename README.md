@@ -54,16 +54,16 @@ Export Python environment variables in the shell before starting Uvicorn. Backen
 
 ## Environment variables
 
-| Variable | Where | Purpose |
-|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Next.js | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Next.js | Public anon key; protected by RLS |
-| `OPENAI_API_KEY` | Next.js / Python server only | Optional live content generation |
-| `OPENAI_MODEL` | Next.js / Python | Default `gpt-4.1-mini` |
-| `NEXT_PUBLIC_BACKEND_URL` | Next.js | Separately hosted FastAPI origin |
-| `SUPABASE_URL` | Python | Same Supabase project URL |
-| `SUPABASE_ANON_KEY` | Python | Public anon key used with user JWT |
-| `ALLOWED_ORIGINS` | Python | Comma-separated allowed frontend origins |
+| Variable                        | Where                        | Purpose                                  |
+| ------------------------------- | ---------------------------- | ---------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Next.js                      | Supabase project URL                     |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Next.js                      | Public anon key; protected by RLS        |
+| `OPENAI_API_KEY`                | Next.js / Python server only | Optional live content generation         |
+| `OPENAI_MODEL`                  | Next.js / Python             | Default `gpt-4.1-mini`                   |
+| `NEXT_PUBLIC_BACKEND_URL`       | Next.js                      | Separately hosted FastAPI origin         |
+| `SUPABASE_URL`                  | Python                       | Same Supabase project URL                |
+| `SUPABASE_ANON_KEY`             | Python                       | Public anon key used with user JWT       |
+| `ALLOWED_ORIGINS`               | Python                       | Comma-separated allowed frontend origins |
 
 Never place service-role keys or AI credentials in public variables or commits.
 

@@ -1,23 +1,377 @@
-export type Customer = {id:string;name:string;email:string;location:string;age:string;interests:string;spending:number;purchases:number;visits:number;engagement:number;recency:number;consent:boolean;segment:string};
-export type Product = {id:string;name:string;category:string;description:string;price:number;discount:number;audience:string;url:string};
-export type Campaign = {id:string;name:string;product:string;audience:string;channel:string;objective:string;tone:string;budget:number;start:string;end:string;status:string;impressions:number;clicks:number;conversions:number;revenue:number;content:string};
-export type SavedContent = {id:string;name:string;channel:string;content:string;created:string;mode:string};
-export type ABTest = {id:string;name:string;a:string;b:string;visitorsA:number;visitorsB:number;conversionsA:number;conversionsB:number};
-export type Prediction = {id:string;name:string;probability:number;created:string;model:string};
-export type Store = {demoData?:boolean;customers:Customer[];products:Product[];campaigns:Campaign[];content:SavedContent[];tests:ABTest[];predictions:Prediction[];imports:{id:string;name:string;rows:number;created:string}[];settings:{business:string;name:string;currency:string;role:string};};
+export type Customer = {
+  id: string;
+  name: string;
+  email: string;
+  location: string;
+  age: string;
+  interests: string;
+  spending: number;
+  purchases: number;
+  visits: number;
+  engagement: number;
+  recency: number;
+  consent: boolean;
+  segment: string;
+};
+export type Product = {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  discount: number;
+  audience: string;
+  url: string;
+};
+export type Campaign = {
+  id: string;
+  name: string;
+  product: string;
+  audience: string;
+  channel: string;
+  objective: string;
+  tone: string;
+  budget: number;
+  start: string;
+  end: string;
+  status: string;
+  impressions: number;
+  clicks: number;
+  conversions: number;
+  revenue: number;
+  content: string;
+};
+export type SavedContent = {
+  id: string;
+  name: string;
+  channel: string;
+  content: string;
+  created: string;
+  mode: string;
+};
+export type ABTest = {
+  id: string;
+  name: string;
+  a: string;
+  b: string;
+  visitorsA: number;
+  visitorsB: number;
+  conversionsA: number;
+  conversionsB: number;
+};
+export type Prediction = {
+  id: string;
+  name: string;
+  probability: number;
+  created: string;
+  model: string;
+};
+export type Store = {
+  demoData?: boolean;
+  customers: Customer[];
+  products: Product[];
+  campaigns: Campaign[];
+  content: SavedContent[];
+  tests: ABTest[];
+  predictions: Prediction[];
+  imports: { id: string; name: string; rows: number; created: string }[];
+  settings: { business: string; name: string; currency: string; role: string };
+};
 export const uid = () => crypto.randomUUID();
-const names=['Olivia Chen','James Wilson','Amara Okafor','Noah Patel','Sofia Garcia','Liam Anderson','Ava Thompson','Ethan Kim','Isabella Rossi','Arjun Reddy','Mia Williams','Lucas Martin','Zara Ahmed','Henry Brown','Priya Sharma','Leo Davis','Emma Taylor','Oliver Lee','Ananya Rao','Mason Clark'];
-export const segmentNames=['High-value','Potential buyers','New customers','Loyal customers','Inactive','Discount-sensitive','At risk'];
-export function seed():Store {
- const customers:Customer[]=Array.from({length:120},(_,i)=>({id:`demo-c-${i}`,name:names[i%20]+(i>=20?` ${Math.floor(i/20)+1}`:''),email:`customer${i+1}@example.com`,location:['New York','London','Hyderabad','Singapore','Austin'][i%5],age:['18–24','25–34','35–44','45–54'][i%4],interests:['Wellness, lifestyle','Technology, travel','Fashion, design','Fitness, outdoors'][i%4],spending:Math.round(85+(i*173)%4800),purchases:1+(i*7)%24,visits:3+(i*11)%80,engagement:20+(i*13)%80,recency:1+(i*17)%180,consent:i%9!==0,segment:segmentNames[i%7]}));
- const products:Product[]=Array.from({length:20},(_,i)=>({id:`demo-p-${i}`,name:['Aura Smartwatch','Everyday Essentials Kit','Studio Headphones','Cloud Running Shoes','Botanical Skincare Set','Travel Backpack','Ceramic Pour-over','Linen Collection','Wellness Membership','Wireless Speaker'][i%10]+(i>=10?' Pro':''),category:['Technology','Lifestyle','Technology','Fitness','Beauty'][i%5],description:'Thoughtfully designed for everyday moments. Premium materials, purposeful details, and quality you can feel.',price:49+i*19,discount:i%3===0?10:0,audience:'Design-conscious professionals',url:''}));
- const campaignNames=['The everyday upgrade','Your next adventure','A little self-care','Made for your momentum','Welcome to something better','The weekend edit','Back to your favorites','More of what you love','A fresh perspective','Your exclusive first look','The loyalty collection','November essentials'];
- const campaigns:Campaign[]=campaignNames.map((name,i)=>({id:`demo-m-${i}`,name,product:products[i%20].name,audience:segmentNames[i%7],channel:['Email','Instagram','Google Ads','Facebook','WhatsApp','SMS'][i%6],objective:'Increase Sales',tone:'Friendly',budget:500+i*175,start:`2026-11-${String(3+i*2).padStart(2,'0')}`,end:'2026-11-30',status:['Active','Active','Scheduled','Draft','Completed','Paused'][i%6],impressions:8200+i*3451,clicks:320+i*153,conversions:18+i*9,revenue:1800+i*1160,content:`Meet ${products[i%20].name}. A thoughtful upgrade to your everyday. Explore the collection and find your new favorite.`}));
- return {demoData:true,customers,products,campaigns,content:[],tests:[{id:'demo-ab-1',name:'Welcome email subject line',a:'Your next favorite is here',b:'A little something, just for you',visitorsA:1250,visitorsB:1270,conversionsA:86,conversionsB:112}],predictions:[],imports:[],settings:{business:'Acme Studio',name:'Alex Morgan',currency:'USD',role:'Admin'}};
+const names = [
+  "Olivia Chen",
+  "James Wilson",
+  "Amara Okafor",
+  "Noah Patel",
+  "Sofia Garcia",
+  "Liam Anderson",
+  "Ava Thompson",
+  "Ethan Kim",
+  "Isabella Rossi",
+  "Arjun Reddy",
+  "Mia Williams",
+  "Lucas Martin",
+  "Zara Ahmed",
+  "Henry Brown",
+  "Priya Sharma",
+  "Leo Davis",
+  "Emma Taylor",
+  "Oliver Lee",
+  "Ananya Rao",
+  "Mason Clark",
+];
+export const segmentNames = [
+  "High-value",
+  "Potential buyers",
+  "New customers",
+  "Loyal customers",
+  "Inactive",
+  "Discount-sensitive",
+  "At risk",
+];
+export function seed(): Store {
+  const customers: Customer[] = Array.from({ length: 120 }, (_, i) => ({
+    id: `demo-c-${i}`,
+    name: names[i % 20] + (i >= 20 ? ` ${Math.floor(i / 20) + 1}` : ""),
+    email: `customer${i + 1}@example.com`,
+    location: ["New York", "London", "Hyderabad", "Singapore", "Austin"][i % 5],
+    age: ["18–24", "25–34", "35–44", "45–54"][i % 4],
+    interests: [
+      "Wellness, lifestyle",
+      "Technology, travel",
+      "Fashion, design",
+      "Fitness, outdoors",
+    ][i % 4],
+    spending: Math.round(85 + ((i * 173) % 4800)),
+    purchases: 1 + ((i * 7) % 24),
+    visits: 3 + ((i * 11) % 80),
+    engagement: 20 + ((i * 13) % 80),
+    recency: 1 + ((i * 17) % 180),
+    consent: i % 9 !== 0,
+    segment: segmentNames[i % 7],
+  }));
+  const products: Product[] = Array.from({ length: 20 }, (_, i) => ({
+    id: `demo-p-${i}`,
+    name:
+      [
+        "Aura Smartwatch",
+        "Everyday Essentials Kit",
+        "Studio Headphones",
+        "Cloud Running Shoes",
+        "Botanical Skincare Set",
+        "Travel Backpack",
+        "Ceramic Pour-over",
+        "Linen Collection",
+        "Wellness Membership",
+        "Wireless Speaker",
+      ][i % 10] + (i >= 10 ? " Pro" : ""),
+    category: ["Technology", "Lifestyle", "Technology", "Fitness", "Beauty"][
+      i % 5
+    ],
+    description:
+      "Thoughtfully designed for everyday moments. Premium materials, purposeful details, and quality you can feel.",
+    price: 49 + i * 19,
+    discount: i % 3 === 0 ? 10 : 0,
+    audience: "Design-conscious professionals",
+    url: "",
+  }));
+  const campaignNames = [
+    "The everyday upgrade",
+    "Your next adventure",
+    "A little self-care",
+    "Made for your momentum",
+    "Welcome to something better",
+    "The weekend edit",
+    "Back to your favorites",
+    "More of what you love",
+    "A fresh perspective",
+    "Your exclusive first look",
+    "The loyalty collection",
+    "November essentials",
+  ];
+  const campaigns: Campaign[] = campaignNames.map((name, i) => ({
+    id: `demo-m-${i}`,
+    name,
+    product: products[i % 20].name,
+    audience: segmentNames[i % 7],
+    channel: [
+      "Email",
+      "Instagram",
+      "Google Ads",
+      "Facebook",
+      "WhatsApp",
+      "SMS",
+    ][i % 6],
+    objective: "Increase Sales",
+    tone: "Friendly",
+    budget: 500 + i * 175,
+    start: `2026-11-${String(3 + i * 2).padStart(2, "0")}`,
+    end: "2026-11-30",
+    status: ["Active", "Active", "Scheduled", "Draft", "Completed", "Paused"][
+      i % 6
+    ],
+    impressions: 8200 + i * 3451,
+    clicks: 320 + i * 153,
+    conversions: 18 + i * 9,
+    revenue: 1800 + i * 1160,
+    content: `Meet ${products[i % 20].name}. A thoughtful upgrade to your everyday. Explore the collection and find your new favorite.`,
+  }));
+  return {
+    demoData: true,
+    customers,
+    products,
+    campaigns,
+    content: [],
+    tests: [
+      {
+        id: "demo-ab-1",
+        name: "Welcome email subject line",
+        a: "Your next favorite is here",
+        b: "A little something, just for you",
+        visitorsA: 1250,
+        visitorsB: 1270,
+        conversionsA: 86,
+        conversionsB: 112,
+      },
+    ],
+    predictions: [],
+    imports: [],
+    settings: {
+      business: "Acme Studio",
+      name: "Alex Morgan",
+      currency: "USD",
+      role: "Admin",
+    },
+  };
 }
-export function metrics(campaigns:Campaign[]) {const total=(key:'impressions'|'clicks'|'conversions'|'revenue'|'budget')=>campaigns.reduce((a,c)=>a+c[key],0);const impressions=total('impressions'),clicks=total('clicks'),conversions=total('conversions'),revenue=total('revenue'),spend=total('budget');return {impressions,clicks,conversions,revenue,spend,ctr:impressions?clicks/impressions*100:0,cvr:clicks?conversions/clicks*100:0,roi:spend?(revenue-spend)/spend*100:0,cac:conversions?spend/conversions:0};}
-export function conversionScore(c:Pick<Customer,'engagement'|'visits'|'purchases'|'recency'>) {return 1/(1+Math.exp(-(-2.5+c.engagement*.032+c.visits*.012+c.purchases*.045-c.recency*.014)));}
-export function abResult(t:ABTest) {const valid=t.visitorsA>0&&t.visitorsB>0&&t.conversionsA>=0&&t.conversionsB>=0&&t.conversionsA<=t.visitorsA&&t.conversionsB<=t.visitorsB;if(!valid)return {rateA:0,rateB:0,z:0,significant:false,sufficient:false,winner:'Invalid counts'};const rateA=t.conversionsA/t.visitorsA,rateB=t.conversionsB/t.visitorsB,p=(t.conversionsA+t.conversionsB)/(t.visitorsA+t.visitorsB),se=Math.sqrt(p*(1-p)*(1/t.visitorsA+1/t.visitorsB)),z=se?Math.abs(rateB-rateA)/se:0,sufficient=Math.min(t.conversionsA,t.conversionsB,t.visitorsA-t.conversionsA,t.visitorsB-t.conversionsB)>=10;return {rateA,rateB,z,significant:sufficient&&z>1.96,sufficient,winner:sufficient&&z>1.96?(rateA>rateB?'Variation A':'Variation B'):'No conclusive winner'};}
-export function kmeans(customers:Customer[],k=7) {if(!customers.length)return [];k=Math.min(k,customers.length);const raw=customers.map(c=>[c.spending,c.purchases,c.recency,c.engagement,c.visits]);const means=raw[0].map((_,j)=>raw.reduce((a,r)=>a+r[j],0)/raw.length),std=means.map((m,j)=>Math.sqrt(raw.reduce((a,r)=>a+(r[j]-m)**2,0)/raw.length)||1);const xs=raw.map(r=>r.map((v,j)=>(v-means[j])/std[j]));let centers=Array.from({length:k},(_,i)=>[...xs[Math.floor(i*xs.length/k)]]),labels:number[]=[];for(let iter=0;iter<30;iter++){labels=xs.map(x=>centers.map(c=>x.reduce((a,v,j)=>a+(v-c[j])**2,0)).reduce((best,d,i,all)=>d<all[best]?i:best,0));centers=centers.map((c,g)=>c.map((v,j)=>{const members=xs.filter((_,i)=>labels[i]===g);return members.length?members.reduce((a,x)=>a+x[j],0)/members.length:v;}));}return customers.map((c,i)=>({...c,segment:`Cluster ${labels[i]+1}`}));}
-export function recommendations(store:Store) {const m=metrics(store.campaigns);const opted=store.customers.filter(c=>c.consent);return [{title:'Reconnect with your high-value audience',detail:`${opted.filter(c=>c.spending>2500).length} opted-in customers have spent over $2,500. Create a loyalty campaign with an exclusive early-access offer.`,action:'Create loyalty campaign',type:'Audience opportunity',icon:'users'},{title:'Give your next campaign a stronger opening',detail:`Your recorded click-through rate is ${m.ctr.toFixed(2)}%. Test benefit-led subject lines against your existing copy before expanding your budget.`,action:'Start an A/B test',type:'Content optimization',icon:'sparkles'},{title:'Bring your inactive customers back',detail:`${opted.filter(c=>c.recency>90).length} opted-in customers have not purchased in 90 days. Test a relevant win-back message. Impact must be measured in an experiment.`,action:'Build a win-back campaign',type:'Retention opportunity',icon:'trend'}];}
-
+export function metrics(campaigns: Campaign[]) {
+  const total = (
+    key: "impressions" | "clicks" | "conversions" | "revenue" | "budget",
+  ) => campaigns.reduce((a, c) => a + c[key], 0);
+  const impressions = total("impressions"),
+    clicks = total("clicks"),
+    conversions = total("conversions"),
+    revenue = total("revenue"),
+    spend = total("budget");
+  return {
+    impressions,
+    clicks,
+    conversions,
+    revenue,
+    spend,
+    ctr: impressions ? (clicks / impressions) * 100 : 0,
+    cvr: clicks ? (conversions / clicks) * 100 : 0,
+    roi: spend ? ((revenue - spend) / spend) * 100 : 0,
+    cac: conversions ? spend / conversions : 0,
+  };
+}
+export function conversionScore(
+  c: Pick<Customer, "engagement" | "visits" | "purchases" | "recency">,
+) {
+  return (
+    1 /
+    (1 +
+      Math.exp(
+        -(
+          -2.5 +
+          c.engagement * 0.032 +
+          c.visits * 0.012 +
+          c.purchases * 0.045 -
+          c.recency * 0.014
+        ),
+      ))
+  );
+}
+export function abResult(t: ABTest) {
+  const valid =
+    t.visitorsA > 0 &&
+    t.visitorsB > 0 &&
+    t.conversionsA >= 0 &&
+    t.conversionsB >= 0 &&
+    t.conversionsA <= t.visitorsA &&
+    t.conversionsB <= t.visitorsB;
+  if (!valid)
+    return {
+      rateA: 0,
+      rateB: 0,
+      z: 0,
+      significant: false,
+      sufficient: false,
+      winner: "Invalid counts",
+    };
+  const rateA = t.conversionsA / t.visitorsA,
+    rateB = t.conversionsB / t.visitorsB,
+    p = (t.conversionsA + t.conversionsB) / (t.visitorsA + t.visitorsB),
+    se = Math.sqrt(p * (1 - p) * (1 / t.visitorsA + 1 / t.visitorsB)),
+    z = se ? Math.abs(rateB - rateA) / se : 0,
+    sufficient =
+      Math.min(
+        t.conversionsA,
+        t.conversionsB,
+        t.visitorsA - t.conversionsA,
+        t.visitorsB - t.conversionsB,
+      ) >= 10;
+  return {
+    rateA,
+    rateB,
+    z,
+    significant: sufficient && z > 1.96,
+    sufficient,
+    winner:
+      sufficient && z > 1.96
+        ? rateA > rateB
+          ? "Variation A"
+          : "Variation B"
+        : "No conclusive winner",
+  };
+}
+export function kmeans(customers: Customer[], k = 7) {
+  if (!customers.length) return [];
+  k = Math.min(k, customers.length);
+  const raw = customers.map((c) => [
+    c.spending,
+    c.purchases,
+    c.recency,
+    c.engagement,
+    c.visits,
+  ]);
+  const means = raw[0].map(
+      (_, j) => raw.reduce((a, r) => a + r[j], 0) / raw.length,
+    ),
+    std = means.map(
+      (m, j) =>
+        Math.sqrt(raw.reduce((a, r) => a + (r[j] - m) ** 2, 0) / raw.length) ||
+        1,
+    );
+  const xs = raw.map((r) => r.map((v, j) => (v - means[j]) / std[j]));
+  let centers = Array.from({ length: k }, (_, i) => [
+      ...xs[Math.floor((i * xs.length) / k)],
+    ]),
+    labels: number[] = [];
+  for (let iter = 0; iter < 30; iter++) {
+    labels = xs.map((x) =>
+      centers
+        .map((c) => x.reduce((a, v, j) => a + (v - c[j]) ** 2, 0))
+        .reduce((best, d, i, all) => (d < all[best] ? i : best), 0),
+    );
+    centers = centers.map((c, g) =>
+      c.map((v, j) => {
+        const members = xs.filter((_, i) => labels[i] === g);
+        return members.length
+          ? members.reduce((a, x) => a + x[j], 0) / members.length
+          : v;
+      }),
+    );
+  }
+  return customers.map((c, i) => ({
+    ...c,
+    segment: `Cluster ${labels[i] + 1}`,
+  }));
+}
+export function recommendations(store: Store) {
+  const m = metrics(store.campaigns);
+  const opted = store.customers.filter((c) => c.consent);
+  return [
+    {
+      title: "Reconnect with your high-value audience",
+      detail: `${opted.filter((c) => c.spending > 2500).length} opted-in customers have spent over $2,500. Create a loyalty campaign with an exclusive early-access offer.`,
+      action: "Create loyalty campaign",
+      type: "Audience opportunity",
+      icon: "users",
+    },
+    {
+      title: "Give your next campaign a stronger opening",
+      detail: `Your recorded click-through rate is ${m.ctr.toFixed(2)}%. Test benefit-led subject lines against your existing copy before expanding your budget.`,
+      action: "Start an A/B test",
+      type: "Content optimization",
+      icon: "sparkles",
+    },
+    {
+      title: "Bring your inactive customers back",
+      detail: `${opted.filter((c) => c.recency > 90).length} opted-in customers have not purchased in 90 days. Test a relevant win-back message. Impact must be measured in an experiment.`,
+      action: "Build a win-back campaign",
+      type: "Retention opportunity",
+      icon: "trend",
+    },
+  ];
+}
