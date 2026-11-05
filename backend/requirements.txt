@@ -1,0 +1,12 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+pydantic>=2.10,<3
+sqlalchemy>=2.0,<3
+psycopg[binary]>=3.2,<4
+pandas>=2.2,<3
+numpy>=2.0,<3
+scikit-learn>=1.6,<2
+langgraph>=0.3,<2
+langchain-openai>=0.3,<2
+httpx>=0.28,<1
+pytest>=8,<10
